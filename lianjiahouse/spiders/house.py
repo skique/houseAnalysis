@@ -13,6 +13,8 @@ class HouseSpider(CrawlSpider):
     rules = (
         Rule(LinkExtractor('/ershoufang/pg\d+'),follow=True),#实现翻页抓取
         Rule(LinkExtractor(allow='/ershoufang/\d{12}.html'), callback='parse_item'),
+        # Rule(LinkExtractor(restrict_xpaths='//div[contains(@class,"house-lst-page-box")]/a[last()]')),
+        # Rule(LinkExtractor(restrict_xpaths='//ul[@class="sellListContent"]/li//div[contains(@class,"info")]/div[@class="title"]/a'), callback='parse_item')
     )
 
     def parse_item(self, response):
