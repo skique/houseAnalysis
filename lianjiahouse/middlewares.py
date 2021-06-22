@@ -6,6 +6,12 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
+from collections import defaultdict
+import json
+import random
+
+from scrapy.exceptions import NotConfigured
 
 
 class LianjiahouseSpiderMiddleware(object):
@@ -101,3 +107,38 @@ class LianjiahouseDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+class LianjiahouseRandomHttpProxyMiddleware(HttpProxyMiddleware):
+    def __init__(self, auth_encoding='latin-1', proxy_list_file=None):
+        if not proxy_list_file:
+            raise NotConfigured
+
+        self.auth_encoding = auth_encoding
+        # 分别用两个列表维护http和https的代理
+        self.proxies = defaultdict(list)
+
+        # 从json文件中读取代理服务器配置信息，填入self.proxies
+        with open(proxy_list_file) as f:
+            proxy_list = json.load(f)
+            for proxy in proxy_list:
+                scheme = proxy['proxy_scheme']
+                url = proxy['proxy']
+                self.proxies[scheme].append(self._get_proxy(url,scheme))
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        # 从配置文件读取用户验证信息的编码
+        settings = crawler.settings
+        auth_encoding = settings.get('HHTPPROXY_AUTH_ENCODING', 'lantain-1')
+
+        # 从配置文件中读取代理服务器列表文件（json的路径）
+        proxy_list_file = settings.get('HTTPPROXY_PROXY_LIST_FILE')
+
+        return cls(auth_encoding, proxy_list_file)
+
+
+    def _set_proxy(self, request, scheme):
+        creds, proxy = random.choice(self.proxies[scheme])
+        request.meta['proxy'] = proxy
+        if creds:
+            request.headers['Proxy-Authorization'] = b'Basic' + creds

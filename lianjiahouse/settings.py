@@ -52,9 +52,12 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+DOWNLOADER_MIDDLEWARES = {
 #    'lianjiahouse.middlewares.LianjiahouseDownloaderMiddleware': 543,
-#}
+    'lianjiahouse.middlewares.LianjiahouseRandomHttpProxyMiddleware': 543
+}
+
+HTTPPROXY_PROXY_LIST_FILE = 'ip_list.json'
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html

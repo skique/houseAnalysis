@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import urllib.request
+import json
 
 class Proxies(object):
 
@@ -10,10 +11,10 @@ class Proxies(object):
         self.proxies = []
         self.verify_pro = []
         self.headers = {
-        'Accept': '*/*',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
-        'Accept-Encoding': 'gzip, deflate, sdch',
-        'Accept-Language': 'zh-CN,zh;q=0.8'
+            'Accept': '*/*',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
+            'Accept-Encoding': 'gzip, deflate, sdch',
+            'Accept-Language': 'zh-CN,zh;q=0.8'
         }
         self.get_proxies()
 
@@ -25,17 +26,22 @@ class Proxies(object):
         br = str(soup.find(attrs={'class':'cont'}))
         ip = re.findall('(\d*\d\.\d*\.\d*\.\d*\:\d*@[A-Z]*)',br)
         for odd in ip:
-            ip_dict = {}
-            ip_dict[str(odd.split('@')[1]).lower()] = odd.split('@')[0]
-            self.proxies.append(ip_dict)
+            # ip_dict = {}
+            # ip_dict[str(odd.split('@')[1]).lower()] = odd.split('@')[0]
+            # self.proxies.append(ip_dict)
+            proxy_scheme = str(odd.split('@')[1]).lower()
+            proxy = str(odd.split('@')[1]).lower() + '://' + odd.split('@')[0]
+            self.proxies.append({'proxy_scheme': proxy_scheme, "proxy": proxy})
 
     #验证IP
     def verify_proxies(self):
-        # url = 'http://pv.sohu.com/cityjson'
-        url = 'http://ip.42.pl/raw'
-        for proxy in self.proxies:
-            proxy_str = re.search('https*',str(proxy)).group() + '://' + re.search('\d*\d\.\d*\.\d*\.\d*\:\d*',str(proxy)).group()
-            proxy_handler = urllib.request.ProxyHandler(proxy)
+        # url = 'http://ip.42.pl/raw'
+        for item in self.proxies:
+            proxy = item['proxy']
+            scheme = item['proxy_scheme']
+            url = '%s://ip.42.pl/raw' % scheme
+            # proxy_str = re.search('https*',str(proxy)).group() + '://' + re.search('\d*\d\.\d*\.\d*\.\d*\:\d*',str(proxy)).group()
+            proxy_handler = urllib.request.ProxyHandler({scheme: proxy})
             openner = urllib.request.build_opener(proxy_handler)
 
             try:
@@ -45,18 +51,16 @@ class Proxies(object):
                 if response.getcode() == 200:#判断响应码是否为200，成功请求
                     # print(response.read().decode('gbk'))
                     print(response.read().decode())
-                    self.verify_pro.append(proxy_str)
+                    self.verify_pro.append({'proxy':proxy, 'proxy_scheme': scheme})
             except Exception as e:
                 print(e)
 
 
     def write_proxies(self):
-        # self.get_proxies()
         self.verify_proxies()
         proxie = self.verify_pro
-        with open('IP.txt', 'w') as f:
-            for proxy in proxie:
-                    f.write(proxy+'\n')
+        with open('ip_list.json', 'w') as f:
+                json.dump(proxie, f)
         print(self.verify_pro)
 
 Proxies().write_proxies()
