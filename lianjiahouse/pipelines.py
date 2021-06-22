@@ -7,7 +7,8 @@
 import pymongo
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy import Request
-
+from itemadapter import ItemAdapter
+from scrapy.exceptions import DropItem
 
 class LianjiahousePipeline(object):
     # 设置存储文档名称
@@ -56,3 +57,17 @@ class LianjiaImagePipeline(ImagesPipeline):
         # 图片保存，文件夹/图片
         image_save = u'{0}/{1}'.format(image_folder, image_guild)
         return image_save
+
+
+class LianjiahouseDuplicatesPipeline:
+
+    def __init__(self):
+        self.house_seen = set()
+
+    def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+        if adapter['house_name'] in self.house_seen:
+            raise DropItem(f"Duplicate item found: {item!r}")
+        else:
+            self.house_seen.add(adapter['house_name'])
+            return item

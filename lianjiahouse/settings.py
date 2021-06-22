@@ -67,10 +67,11 @@ HTTPPROXY_PROXY_LIST_FILE = 'ip_list.json'
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
+ITEM_PIPELINES = {
+    'lianjiahouse.pipelines.LianjiahouseDuplicatesPipeline': 200,
     # 'lianjiahouse.pipelines.LianjiahousePipeline': 300,
     # 'lianjiahouse.pipelines.LianjiaImagePipeline':400
-# }
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -94,7 +95,7 @@ HTTPPROXY_PROXY_LIST_FILE = 'ip_list.json'
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 CLOSESPIDER_ITEMCOUNT = 1000
 # 图片存储配置
-IMAGES_STORE = '/images'
+IMAGES_STORE = './images/'
 IMAGES_URLS_FIELD = 'images_urls'
 IMAGES_RESULT_FIELD = 'images'
 
