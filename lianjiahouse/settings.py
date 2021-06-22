@@ -46,15 +46,16 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    'lianjiahouse.middlewares.LianjiahouseSpiderMiddleware': 543,
-#}
+# SPIDER_MIDDLEWARES = {
+#    'lianjiahouse.middlewares.LianjiahouseSpiderMiddleware': 600,
+# }
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
 #    'lianjiahouse.middlewares.LianjiahouseDownloaderMiddleware': 543,
-    'lianjiahouse.middlewares.LianjiahouseRandomHttpProxyMiddleware': 543
+    'lianjiahouse.middlewares.LianjiahouseRandomHttpProxyMiddleware': 543, # IP代理
+    # 'lianjiahouse.middlewares.LianjiahouseSpiderMiddleware': 600, # 数据统计暂时没有生效，待调试
 }
 
 HTTPPROXY_PROXY_LIST_FILE = 'ip_list.json'
@@ -68,9 +69,9 @@ HTTPPROXY_PROXY_LIST_FILE = 'ip_list.json'
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'lianjiahouse.pipelines.LianjiahouseDuplicatesPipeline': 200,
-    # 'lianjiahouse.pipelines.LianjiahousePipeline': 300,
-    # 'lianjiahouse.pipelines.LianjiaImagePipeline':400
+    # 'lianjiahouse.pipelines.LianjiahouseDuplicatesPipeline': 200, # 去处重复项
+    # 'lianjiahouse.pipelines.LianjiahousePipeline': 300, # mongodb数据存储
+    # 'lianjiahouse.pipelines.LianjiaImagePipeline':400  # 图片下载
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -102,3 +103,10 @@ IMAGES_RESULT_FIELD = 'images'
 # MongoDB配置信息
 MONGO_URI = 'localhost:27017'
 MONGO_DATABASE = 'lianjia'
+
+# FEED_URI = 'export_data/%(name)s.data' # 导出文件路径
+# FEED_FORMAT = 'csv' # 导出文件格式
+# FEED_EXPORTER_ENCODING = 'utf-8' # 导出文件编码（默认情况下json文件使用数字编码，其他使用utf-8编码）
+# FEED_EXPORTERS = {
+#     'excel': 'lianjiahouse.my_exporters.ExcelItemExporter'
+# }

@@ -4,7 +4,7 @@
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-
+import scrapy
 from scrapy import signals
 from scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
 from collections import defaultdict
@@ -12,55 +12,6 @@ import json
 import random
 
 from scrapy.exceptions import NotConfigured
-
-
-class LianjiahouseSpiderMiddleware(object):
-    # Not all methods need to be defined. If a method is not defined,
-    # scrapy acts as if the spider middleware does not modify the
-    # passed objects.
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        # This method is used by Scrapy to create your spiders.
-        s = cls()
-        crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        return s
-
-    def process_spider_input(self, response, spider):
-        # Called for each response that goes through the spider
-        # middleware and into the spider.
-
-        # Should return None or raise an exception.
-        return None
-
-    def process_spider_output(self, response, result, spider):
-        # Called with the results returned from the Spider, after
-        # it has processed the response.
-
-        # Must return an iterable of Request, dict or Item objects.
-        for i in result:
-            yield i
-
-    def process_spider_exception(self, response, exception, spider):
-        # Called when a spider or process_spider_input() method
-        # (from other spider middleware) raises an exception.
-
-        # Should return either None or an iterable of Response, dict
-        # or Item objects.
-        pass
-
-    def process_start_requests(self, start_requests, spider):
-        # Called with the start requests of the spider, and works
-        # similarly to the process_spider_output() method, except
-        # that it doesn’t have a response associated.
-
-        # Must return only requests (not items).
-        for r in start_requests:
-            yield r
-
-    def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
-
 
 class LianjiahouseDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -142,3 +93,30 @@ class LianjiahouseRandomHttpProxyMiddleware(HttpProxyMiddleware):
         request.meta['proxy'] = proxy
         if creds:
             request.headers['Proxy-Authorization'] = b'Basic' + creds
+
+class LianjiahouseSpiderMiddleware(object):
+    """
+    利用Scrapy数据收集功能，记录相同小区的数量
+    """
+    def __init__(self, stats):
+        self.stats = stats
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(stats=crawler.stats)
+
+    def process_spider_output(self, response, result, spider):
+        """
+        从item中获取小区名称，在数据收集其中记录相同小区数量
+        :param response:
+        :param result:
+        :param spider:
+        :return:
+        """
+        for item in result:
+            if isinstance(item,scrapy.Item):
+                # 从result中的item获取小区名称
+                community_name = item['community_name']
+                # 在数据统计中为相同的小区增加数量值
+                self.stats.inc_value(community_name)
+            yield item
