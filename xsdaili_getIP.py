@@ -20,7 +20,7 @@ class Proxies(object):
 
     #获取IP
     def get_proxies(self):
-        url = 'http://www.xsdaili.cn/dayProxy/ip/2969.html'#可以更改网页最新链接抓取
+        url = 'http://www.xsdaili.cn/dayProxy/ip/2983.html'#可以更改网页最新链接抓取
         html = requests.get(url, headers=self.headers).content
         soup = BeautifulSoup(html, 'lxml')
         br = str(soup.find(attrs={'class':'cont'}))
@@ -84,5 +84,8 @@ code = res.getcode()#响应对象方法getcode() -> 返回HTTP响应码
 # http://pv.sohu.com/cityjson 返回本机IP地址网站
 
 # http://ip.42.pl/raw 返回本机IP地址网站
+
+# http://icanhazip.com/ 返回本机ip地址
+# https://icanhazip.com/ 返回本机ip地址
 
 '''

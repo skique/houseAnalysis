@@ -8,7 +8,7 @@ from lianjiahouse.items import LianjiahouseItem
 class HouseSpider(CrawlSpider):
     name = 'house'
     allowed_domains = ['lianjia.com']
-    start_urls = ['https://bj.lianjia.com/ershoufang/']
+    start_urls = ['https://hz.lianjia.com/ershoufang/']
 
     rules = (
         Rule(LinkExtractor('/ershoufang/pg\d+'),follow=True),#实现翻页抓取
@@ -23,7 +23,8 @@ class HouseSpider(CrawlSpider):
         i['house_name'] = response.css('title::text').extract_first().replace(' ','')
         # 所在小区
         i['community_name'] = response.css('.communityName a::text').extract_first()
-        # i['location'] = response.css()
+        # 所在区域
+        i['location'] = response.css('.areaName .info::text').extract_first()
         # 链家编号
         i['house_record'] = response.css('.houseRecord .info::text').extract_first()
         # 总价
@@ -47,11 +48,11 @@ class HouseSpider(CrawlSpider):
         i['sub_info'] = response.xpath('//div[@class="base"]//ul/li[9]/text()')\
             .extract_first()
         # 供暖方式
-        i['heating_method'] = response.xpath('//div[@class="base"]//ul/li[11]/text()')\
-            .extract_first()
+        # i['heating_method'] = response.xpath('//div[@class="base"]//ul/li[11]/text()')\
+        #     .extract_first()
         # 产权
-        i['house_property'] = response.xpath('//div[@class="base"]//ul/li[13]/text()')\
-            .extract_first()
+        # i['house_property'] = response.xpath('//div[@class="base"]//ul/li[13]/text()')\
+            # .extract_first()
         # 楼层
         i['floor'] = response.xpath('//div[@class="base"]//ul/li[2]/text()')\
             .extract_first()
@@ -59,7 +60,7 @@ class HouseSpider(CrawlSpider):
         i['total_floors'] = response.xpath('//div[@class="base"]//ul/li[2]/text()')\
             .re_first(r'\d+')
         # 是否有电梯
-        i['is_left'] = response.xpath('//div[@class="base"]//ul/li[12]/text()')\
+        i['is_left'] = response.xpath('//div[@class="base"]//ul/li[11]/text()')\
             .extract_first()
         # 户梯比例
         i['left_rate'] = response.xpath('//div[@class="base"]//ul/li[10]/text()')\

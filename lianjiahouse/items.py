@@ -7,8 +7,35 @@
 
 import scrapy
 
-
-class LianjiahouseItem(scrapy.Item):
+class LianjiaItem(scrapy.Item):
+    # 标签  小区  户型   面积   关注人数  观看人数  发布时间  价格   均价  详情链接  经纬度 城区
+    # 标签
+    title = scrapy.Field()
+    # 小区
+    community = scrapy.Field()
+    # 房间信息
+    houseInfo = scrapy.Field()
+    # 户型
+    model = scrapy.Field()
+    # 面积
+    area = scrapy.Field()
+    # 关注人数
+    focus_num = scrapy.Field()
+    # 观看人数
+    watch_num = scrapy.Field()
+    # 发布时间
+    time = scrapy.Field()
+    # 价格
+    price = scrapy.Field()
+    # 均价
+    average_price = scrapy.Field()
+    # 详情链接
+    link = scrapy.Field()
+    # 城区
+    city = scrapy.Field() 
+    # 经纬度
+    Latitude = scrapy.Field() 
+class LianjiahouseItem(LianjiaItem):
     # define the fields for your item here like:
     # name = scrapy.Field()
     # 发布信息名称
@@ -16,7 +43,7 @@ class LianjiahouseItem(scrapy.Item):
     # 小区名称
     community_name = scrapy.Field()
     # 所在区域
-    # location = scrapy.Field()
+    location = scrapy.Field()
     # 链家编号
     house_record = scrapy.Field()
     # 总售价
@@ -35,9 +62,9 @@ class LianjiahouseItem(scrapy.Item):
     # 装修情况
     sub_info = scrapy.Field()
     # 供暖方式
-    heating_method = scrapy.Field()
+    # heating_method = scrapy.Field()
     # 产权
-    house_property = scrapy.Field()
+    # house_property = scrapy.Field()
     # 楼层
     floor = scrapy.Field()
     # 总层高
@@ -66,4 +93,4 @@ class LianjiahouseItem(scrapy.Item):
     # 图片地址
     images_urls = scrapy.Field()
     # 保存图片
-    images = scrapy.Field()
+    # images = scrapy.Field()

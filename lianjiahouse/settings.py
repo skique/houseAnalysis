@@ -69,7 +69,7 @@ HTTPPROXY_PROXY_LIST_FILE = 'ip_list.json'
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # 'lianjiahouse.pipelines.LianjiahouseDuplicatesPipeline': 200, # 去处重复项
+    'lianjiahouse.pipelines.LianjiahouseDuplicatesPipeline': 200, # 去处重复项
     # 'lianjiahouse.pipelines.LianjiahousePipeline': 300, # mongodb数据存储
     # 'lianjiahouse.pipelines.LianjiaImagePipeline':400  # 图片下载
 }
@@ -94,7 +94,8 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-CLOSESPIDER_ITEMCOUNT = 1000
+# CLOSESPIDER_ITEMCOUNT = 1000
+HTTPERROR_ALLOWED_CODES = [301]
 # 图片存储配置
 IMAGES_STORE = './images/'
 IMAGES_URLS_FIELD = 'images_urls'
