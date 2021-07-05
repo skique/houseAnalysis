@@ -1,17 +1,12 @@
 ## 二手房源分析
 
-##  数据抓取
+##  使用scrapy抓取链家二手房数据--以杭州为例
+
+### 项目分析
     
 ### 获取有效ip
 
 xsdaili_getIP.py脚本文件实现了获取小舒代理每日免费ip列表，并写入到ip_list.json文件   
-### Spider: 
-1. houseSpider: 规则爬虫二维爬取
-
-定义两个Rule分别提取翻页的链接以及详情的链接，   
-爬虫将根据这两个规则拿到的链接发起爬虫请求   
-
-2. testSpider: 测试http代理中间件是否生效
 
 ### middlewaves
 
@@ -87,6 +82,12 @@ scrapy项目的setting配置文件中需要把对应的middlewaves和pipelines�
 CLOSESPIDER_ITEMCOUNT: 1000 # 最大爬取的数据为1000
 
 ```
+
+### 抓取数据：Spider
+
+
+
+
 
 
 ## 数据分析

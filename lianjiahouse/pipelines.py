@@ -66,8 +66,8 @@ class LianjiahouseDuplicatesPipeline:
 
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
-        if adapter['house_name'] in self.house_seen:
+        if adapter['title'] in self.house_seen:
             raise DropItem(f"Duplicate item found: {item!r}")
         else:
-            self.house_seen.add(adapter['house_name'])
+            self.house_seen.add(adapter['title'])
             return item

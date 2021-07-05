@@ -38,10 +38,17 @@ class LianjiaSpider(scrapy.Spider):
             except Exception:
                 pass
 
+    def findTrueScript(self, scripts):
+        for str in scripts:
+            if 'resblockPosition' in str:
+                return str
+
+
     def get_latitude(self,url):  # 进入每个房源链接抓经纬度
         p = requests.get(url)
         contents = etree.HTML(p.content.decode('utf-8'))
-        latitude = contents.xpath('/html/body/script[24]/text()').pop()
+        scripts = contents.xpath('/html/body/script/text()')
+        latitude = self.findTrueScript(scripts)
         time.sleep(3)
         regex = '''resblockPosition(.+)'''
         items = re.search(regex, latitude)

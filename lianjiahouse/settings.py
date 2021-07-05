@@ -54,11 +54,12 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
 #    'lianjiahouse.middlewares.LianjiahouseDownloaderMiddleware': 543,
-    'lianjiahouse.middlewares.LianjiahouseRandomHttpProxyMiddleware': 543, # IP代理
+    # 'lianjiahouse.middlewares.LianjiahouseRandomHttpProxyMiddleware': 543, # IP代理
+    # 'lianjiahouse.middlewares.ProxyMiddleWare': 543 # IP代理
     # 'lianjiahouse.middlewares.LianjiahouseSpiderMiddleware': 600, # 数据统计暂时没有生效，待调试
 }
 
-HTTPPROXY_PROXY_LIST_FILE = 'ip_list.json'
+HTTPPROXY_PROXY_LIST_FILE = 'iplist.json'
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html

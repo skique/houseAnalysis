@@ -20,7 +20,7 @@ class Proxies(object):
 
     #获取IP
     def get_proxies(self):
-        url = 'http://www.xsdaili.cn/dayProxy/ip/2983.html'#可以更改网页最新链接抓取
+        url = 'http://www.xsdaili.cn/dayProxy/ip/2993.html'#可以更改网页最新链接抓取
         html = requests.get(url, headers=self.headers).content
         soup = BeautifulSoup(html, 'lxml')
         br = str(soup.find(attrs={'class':'cont'}))
