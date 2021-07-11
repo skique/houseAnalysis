@@ -7,6 +7,39 @@
 
 import scrapy
 
+class ZufangItem(scrapy.Item):
+    # 标签  小区  户型   面积   关注人数  观看人数  发布时间  价格   均价  详情链接  经纬度 城区
+    # 标签
+    title = scrapy.Field()
+    # 小区
+    community = scrapy.Field()
+    # 房间信息
+    houseInfo = scrapy.Field()
+    # 面积
+    area = scrapy.Field()
+    # 户型
+    layout = scrapy.Field()
+    # 朝向
+    direction = scrapy.Field()
+    # 发布时间
+    time = scrapy.Field()
+    # 价格
+    price = scrapy.Field()
+    # 详情链接
+    link = scrapy.Field()
+    # 城区
+    city = scrapy.Field()
+    # 经度
+    lat = scrapy.Field()
+    # 纬度
+    lng = scrapy.Field()
+    # 距离
+    distance = scrapy.Field()
+    # 是否是广告
+    advertisement = scrapy.Field()
+    # 爬取的url
+    url = scrapy.Field()
+
 class LianjiaItem(scrapy.Item):
     # 标签  小区  户型   面积   关注人数  观看人数  发布时间  价格   均价  详情链接  经纬度 城区
     # 标签
