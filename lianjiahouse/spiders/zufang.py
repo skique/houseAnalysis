@@ -79,18 +79,18 @@ class LianjiaSpider(scrapy.Spider):
                             item['community'] = ''.join(house.xpath('div[1]/p[2]/a/text()')).strip()
                             item['price'] = house.xpath('div[1]/span[1]/em/text()').pop()
 
-                            info = house.xpath('div[1]/p[2]/text()')
+                            # info = house.xpath('div[1]/p[2]/text()')
                             item['houseInfo'] = ''.join(house.xpath('div[1]/p[2]/text()')).replace('\n', '').replace(' ', '')
-                            item['area'] = info[4].replace('\n', '').replace(' ', '')
-                            item['direction'] = info[5].replace('\n', '').replace(' ', '')
-                            item['layout'] = info[6].replace('\n', '').replace(' ', '')
+                            # item['area'] = info[4].replace('\n', '').replace(' ', '')
+                            # item['direction'] = info[5].replace('\n', '').replace(' ', '')
+                            # item['layout'] = info[6].replace('\n', '').replace(' ', '')
                             
-                            item['time'] = ''.join(house.xpath('div[1]/p[4]/span/text()')).strip()
+                            item['time'] = ''.join(house.xpath('div[1]/p[4]/span/text()')).replace('\n', '').replace(' ', '')
                         else:
                             item['community'] = house.xpath('div[1]/p[4]/span[1]/text()').pop().strip()
                             item['houseInfo'] = ''.join(house.xpath('div[1]/p[2]/text()')).replace('\n', '').replace(' ', '')
                             
-                            item['time'] = house.xpath('div[1]/p[4]/span/text()').pop().strip()
+                            item['time'] = ''.join(house.xpath('div[1]/p[4]/span/text()')).replace('\n', '').replace(' ', '')
 
                         
 
