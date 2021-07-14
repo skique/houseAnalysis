@@ -59,7 +59,7 @@ class Proxies(object):
     def write_proxies(self):
         self.verify_proxies()
         proxie = self.verify_pro
-        with open('ip_list.json', 'w') as f:
+        with open('output/ip_list.json', 'w') as f:
                 json.dump(proxie, f)
         print(self.verify_pro)
 
