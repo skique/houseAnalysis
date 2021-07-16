@@ -11,6 +11,7 @@ from collections import defaultdict
 import json
 import random
 import time
+import requests
 
 from scrapy.exceptions import NotConfigured
 
@@ -95,6 +96,34 @@ class LianjiahouseRandomHttpProxyMiddleware(HttpProxyMiddleware):
         if creds:
             request.headers['Proxy-Authorization'] = b'Basic' + creds
 
+class ProxyMiddleware():
+    def __init__(self, proxy_url):
+        self.proxy_url = proxy_url
+    
+    def get_random_proxy(self):
+        try:
+            response = requests.get(self.proxy_url)
+            if response.status_code == 200:
+                proxy = response.text
+                return proxy
+        except requests.ConnectionError:
+            return False
+    
+    def process_request(self, request, spider):
+        # if request.meta.get('retry_times'):
+        print(request.meta)
+        proxy = self.get_random_proxy()
+        if proxy:
+            uri = 'https://{proxy}'.format(proxy=proxy)
+            request.meta['proxy'] = uri
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        settings = crawler.settings
+        return cls(
+            proxy_url=settings.get('PROXY_URL')
+        )
+        
 class LianjiahouseSpiderMiddleware(object):
     """
     利用Scrapy数据收集功能，记录相同小区的数量
@@ -122,24 +151,3 @@ class LianjiahouseSpiderMiddleware(object):
                 self.stats.inc_value(community_name)
             yield item
 
-
-
-# class ProxyMiddleWare(object):  
-#     """docstring for ProxyMiddleWare"""  
-#     def process_request(self,request, spider):  
-#         '''对request对象加上proxy'''  
-#         proxy = self.get_random_proxy()  
-#         print("this is request ip:"+proxy)  
-#         request.meta['proxy'] = proxy   # 对当前reque加上代理
-
-#     def get_random_proxy(self):  
-#         '''随机从文件中读取proxy'''  
-#         while 1:  
-#             with open('iplist.txt', 'r') as f: 
-#                 proxies = f.readlines()  
-#             if proxies:  
-#                 break  
-#             else:  
-#                 time.sleep(1)  
-#         proxy = random.choice(proxies).strip()
-#         return proxy
