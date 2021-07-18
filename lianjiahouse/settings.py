@@ -105,7 +105,7 @@ IMAGES_URLS_FIELD = 'images_urls'
 IMAGES_RESULT_FIELD = 'images'
 
 # MongoDB配置信息
-MONGO_URI = 'localhost:27017'
+MONGO_URI = '1.15.237.241:27017'
 MONGO_DATABASE = 'lianjia'
 
 # FEED_URI = 'export_data/%(name)s.data' # 导出文件路径
